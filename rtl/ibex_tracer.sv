@@ -116,7 +116,9 @@ module ibex_tracer (
       $sformat(file_name, "%s_%h.log", file_name_base, hart_id_i);
 
       $display("%m: Writing execution trace to %s", file_name);
+       // verilator lint_off BLKSEQ
       file_handle = $fopen(file_name, "w");
+       // verilator lint_on BLKSEQ
       $fwrite(file_handle,
               "Time\tCycle\tPC\tInsn\tDecoded instruction\tRegister and memory contents\n");
     end
@@ -759,8 +761,10 @@ module ibex_tracer (
   end
 
   always_comb begin
+     // verilator lint_off MULTIDRIVEN
     decoded_str = "";
     data_accessed = 5'h0;
+     // verilator lint_on MULTIDRIVEN
     insn_is_compressed = 0;
 
     // Check for compressed instructions
